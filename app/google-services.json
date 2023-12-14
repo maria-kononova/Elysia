@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "632756699609",
+    "project_id": "elysia-76abe",
+    "storage_bucket": "elysia-76abe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632756699609:android:625d9bed6eda09844319c8",
+        "android_client_info": {
+          "package_name": "com.example.elysia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632756699609-cc2elaut2eho4vu4ia9mr6hl5g4kmj44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCckOKuTBvzjNR3d0PrkMr0hyKHllZIC4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632756699609-cc2elaut2eho4vu4ia9mr6hl5g4kmj44.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

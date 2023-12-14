@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardView"
+    android:layout_width="100dp"
+    android:layout_height="130dp"
+    android:layout_margin="5dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp">
+            <ImageView
+                android:id="@+id/imageViewFile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:padding="15dp"
+                android:src="@drawable/file"/>
+            <ImageView
+                android:id="@+id/deleteFile"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_delete"
+                android:tint="?colorPrimary"/>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Документ.doс"
+            android:textSize="10dp"
+            android:layout_margin="2dp"
+            android:textAlignment="center" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

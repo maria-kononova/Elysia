@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LoadingScreenTheme" parent="Theme.AppCompat.Light.DialogWhenLarge">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
+    </style>
+    <style name="LabelTextAppearance">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">@drawable/mark</item>
+    </style>
+    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">#000</item>
+    </style>
+    <style name="CalenderViewDateCustomText">
+        <item name="android:textColor">@drawable/selector</item>
+    </style>
+</resources>

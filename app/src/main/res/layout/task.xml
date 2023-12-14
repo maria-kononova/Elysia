@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars = "vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:backgroundTint="?colorPrimary"
+        android:src="@drawable/ic_back"
+        app:tint="?background" />
+    <EditText
+        android:id="@+id/titleTask_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Задача"
+        android:drawableEnd="@drawable/ic_edit"
+        android:textAlignment="center"
+        android:textColor="?colorOnPrimary"
+        android:textSize="25dp"/>
+    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/saveButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:backgroundTint="?colorPrimary"
+                android:src="@drawable/ic_save"
+                app:tint="?background" />
+
+            <EditText
+                android:id="@+id/descriptionTask_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?colorOnPrimary"
+                android:textSize="22dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"/>
+            </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:background="?colorPrimaryVariant"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:tint="?colorPrimary"
+                    android:src="@drawable/ic_grade"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/state"
+                    android:layout_marginTop="10dp"
+                    android:textColor="?colorOnPrimary"
+                    android:textSize="22dp"/>
+                <CheckBox
+                    android:id="@+id/checkBoxDeteils"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="?colorPrimary"
+                    android:text="@string/noComplete"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="10dp"
+                    android:scaleX="1.50"
+                    android:scaleY="1.50"
+                    android:textSize="15dp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:background="?colorPrimaryVariant"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:tint="?colorPrimaryVariant"
+            android:clickable="true"
+            android:src="@drawable/ic_date"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dateCreate"
+            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
+            android:textColor="?colorOnPrimary"
+            android:textSize="21dp"/>
+        <TextView
+            android:id="@+id/dateCreateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2023-12-02"
+            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:textColor="?colorOnPrimary"
+            android:textSize="21dp"/>
+    </LinearLayout>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:background="?colorPrimaryVariant"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+            <LinearLayout
+                android:id="@+id/calendarButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:tint="?colorPrimary"
+                    android:clickable="true"
+                    android:src="@drawable/ic_date"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dateFinish"
+                    android:layout_weight="1"
+                    android:layout_marginTop="15dp"
+                    android:textColor="?colorOnPrimary"
+                    android:textSize="21dp"/>
+                <TextView
+                    android:id="@+id/dateFinishTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2023-12-02"
+                    android:layout_weight="1"
+                    android:layout_marginTop="15dp"
+
+                    android:textColor="?colorOnPrimary"
+                    android:textSize="21dp"/>
+            </LinearLayout>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:background="?colorPrimaryVariant"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:tint="?colorPrimary"
+                    android:src="@drawable/ic_achievement"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/achievement"
+                    android:layout_marginTop="10dp"
+                    android:textColor="?colorOnPrimary"
+                    android:layout_weight="1"
+                    android:textSize="22dp"/>
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:textAlignment="center" />
+            </LinearLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:background="?colorPrimaryVariant"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
+
+    <LinearLayout
+        android:id="@+id/addNoteActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:tint="?colorPrimary"
+            android:src="@drawable/ic_note"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/Notes"
+                android:textColor="?colorOnPrimary"
+                android:textSize="22dp" />
+            <TextView
+            android:id="@+id/dateNoteLastChangeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginBottom="10dp"
+            android:maxLength="30"
+            android:textColor="?colorPrimaryVariant"
+            android:textSize="16dp" />
+
+        </LinearLayout>
+        <ImageButton
+            android:id="@+id/deleteNote"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="120dp"
+            android:backgroundTint="?colorPrimary"
+            android:src="@drawable/ic_delete2"
+            android:tag="off"
+            app:tint="?background" />
+        <ImageButton
+            android:id="@+id/addNote"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="?colorPrimary"
+            android:src="@drawable/ic_add"
+            android:tag="off"
+            app:tint="?background" />
+    </LinearLayout>
+            <com.example.elysia.themes.LinedEditText
+                android:id="@+id/edittxt_multilines"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="11"
+                android:inputType="textMultiLine"
+                android:visibility="gone"
+                android:textSize="20dp" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:background="?colorPrimaryVariant"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/view">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:tint="?colorPrimary"
+            android:src="@drawable/ic_file"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/addFiles"
+            android:textColor="?colorOnPrimary"
+            android:textSize="22dp" />
+
+        <ImageButton
+            android:id="@+id/fileButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="90dp"
+            android:backgroundTint="?colorPrimary"
+            android:src="@drawable/ic_add"
+            app:tint="?background"
+            />
+
+    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/resourse_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

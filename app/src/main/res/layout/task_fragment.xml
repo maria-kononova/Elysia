@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:id="@+id/achievementLinerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/addAchButton"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="30dp"
+            app:cardBackgroundColor="?colorPrimary"
+            android:layout_margin="5dp">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_add"
+                android:layout_gravity="center"
+                app:tint="?background" />
+        </androidx.cardview.widget.CardView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/achievementRV"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp" />
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:paddingBottom="60dp"
+        app:layout_constraintTop_toBottomOf="@+id/achievementLinerLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:background="?colorPrimaryVariant"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"/>
+
+            <LinearLayout
+                android:id="@+id/taskBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/textViewTask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/tasks"
+                    android:textColor="?colorOnPrimary"
+                    android:textSize="24dp" />
+
+                <ImageButton
+                    android:id="@+id/taskButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:backgroundTint="?colorPrimary"
+                    android:src="@drawable/ic_down"
+                    android:tag="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?background" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/task_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:id="@+id/taskCompleteBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/task_list">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/complete"
+                    android:textColor="?colorOnPrimary"
+                    android:textSize="24dp" />
+
+                <ImageButton
+                    android:id="@+id/taskCompleteButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:backgroundTint="?colorPrimary"
+                    android:src="@drawable/ic_down"
+                    android:tag="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?background" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/taskComplete_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_task_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:borderWidth="5dp"
+        app:elevation="4dp"
+        app:fabSize="normal"
+        android:src="@drawable/ic_add"
+        app:tint="?background"
+        app:maxImageSize="35dp"
+        app:backgroundTint="?colorPrimary"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
