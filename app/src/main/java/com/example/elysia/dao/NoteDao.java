@@ -17,6 +17,8 @@ public interface NoteDao {
     Note getNoteByIdTask(long id);
     @Query("update Note set content=:content, dateLastChange=:dateLastChange where id=:id")
     void updateNote(long id, String content, String dateLastChange);
+    @Query("delete from Note where idTask=:id")
+    void deleterNoteByIdTask(long id);
     @Insert
     void insert(Note note);
 

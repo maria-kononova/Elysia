@@ -265,7 +265,6 @@
                 android:id="@+id/edittxt_multilines"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="11"
                 android:inputType="textMultiLine"
                 android:visibility="gone"
                 android:textSize="20dp" />

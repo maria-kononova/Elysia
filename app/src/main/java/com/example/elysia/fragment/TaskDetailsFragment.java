@@ -162,7 +162,7 @@ public class TaskDetailsFragment extends Fragment {
                 ((MainActivity) getActivity()).resources.remove(resource);
                 ((MainActivity)getActivity()).dataBase.resourceDao().delete(resource);
                 resourseAdapter.notifyDataSetChanged();
-                updateTaskLists();
+                //updateTaskLists();
             }
         };
         recyclerView = view.findViewById(R.id.resourse_list);
@@ -269,7 +269,9 @@ public class TaskDetailsFragment extends Fragment {
                             "Удалить",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    ((MainActivity) getActivity()).dataBase.noteDao().delete(note);
+
+                                    ((MainActivity) getActivity()).dataBase.noteDao().deleterNoteByIdTask(task.getId());
+                                    updateTaskLists();
                                     dateNoteLastChangeTextView.setText("");
                                     linedEditText.setText("");
                                     deleteNote.setTag("off");
@@ -410,9 +412,9 @@ public class TaskDetailsFragment extends Fragment {
     }
 
     public void exit(){
-        TaskFragment taskDetails = new TaskFragment(fragmentManager);
+        TaskFragment task = new TaskFragment(fragmentManager);
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, taskDetails)
+                .replace(R.id.fragment_container, task)
                 .commit();
     }
 
@@ -441,17 +443,24 @@ public class TaskDetailsFragment extends Fragment {
             //openFileInApp(uri);
         }
     }
-
-    private String getRealPathFromURI(Uri contentUri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = ((MainActivity)getActivity()).getContentResolver().query(contentUri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String path = cursor.getString(column_index);
-        cursor.close();
-        return path;
-    }
-
+    /*public static void copy(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        try {
+            OutputStream out = new FileOutputStream(dst);
+            try {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            } finally {
+                out.close();
+            }
+        } finally {
+            in.close();
+        }
+    }*/
 
     private void openFileInApp(Uri uri) {
 

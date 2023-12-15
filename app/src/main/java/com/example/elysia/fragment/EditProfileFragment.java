@@ -158,10 +158,11 @@ public class EditProfileFragment  extends Fragment {
         });
         exitBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                SharedPreferences.Editor editor = ((MainActivity)getActivity()).mSettings.edit();
                 ((MainActivity)getActivity()).mAuth.signOut();
                 ((MainActivity)getActivity()).user = null;
-                /*editor.putBoolean(APP_PREFERENCES_AUTH, false);
-                editor.apply();*/
+                editor.putBoolean(APP_PREFERENCES_AUTH, false);
+                editor.apply();
                 ((MainActivity)getActivity()).stateAuth = false;
                 Toast.makeText(getActivity(),R.string.exitFromAcc,Toast.LENGTH_SHORT).show();
                 refreshProfile();

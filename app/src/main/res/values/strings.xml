@@ -38,7 +38,7 @@
     <string name="state">Статус:</string>
     <string name="exitFromAcc">Выход из аккаунта</string>
     <string name="lengthPassNotValid">Пароль должен содержать минимум 6 символов</string>
-    <string name="passwordsMatch">Новый пароль совпаадет со старым</string>
+    <string name="passwordsMatch">Новый пароль совпадает со старым</string>
     <string name="changePassSucsses">Пароль успешно изменён</string>
     <string name="changePassNoSucsses">Пароль не изменён</string>
     <string name="oldPassNotValid">Указанный пароль неверный</string>
@@ -55,4 +55,9 @@
     <string name="achievement">Цель</string>
     <string name="choiseAchievement">Выбор цели:</string>
     <string name="notSucssesUpdateName">Ошибка обновления имени. Попробуйте позже!</string>
+    <string name="notValidEmail">Почта не валидна</string>
+    <string name="notValidPassword">Длина пароля должна быть от 6 символов</string>
+    <string name="notMatchPassword">Пароли не совпадают</string>
+    <string name="notValidogin">Логин пустой</string>
+
 </resources>

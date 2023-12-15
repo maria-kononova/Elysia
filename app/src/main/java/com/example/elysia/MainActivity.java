@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity{
     public ArrayList<Event> eventList = new ArrayList<>();
     public List<Achievement> achievements = new ArrayList<>();
     public List<Resource> resources = new ArrayList<>();
-    DialogFragment loadingScreen;
+    public DialogFragment loadingScreen;
     public FirebaseAuth mAuth;
     public FirebaseFirestore db;
     public User user;
