@@ -54,4 +54,5 @@
     <string name="editAch">Редактировать цель</string>
     <string name="achievement">Цель</string>
     <string name="choiseAchievement">Выбор цели:</string>
+    <string name="notSucssesUpdateName">Ошибка обновления имени. Попробуйте позже!</string>
 </resources>

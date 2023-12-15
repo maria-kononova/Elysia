@@ -1,5 +1,6 @@
 package com.example.elysia.fragment;
 
+import static android.content.ContentValues.TAG;
 import static com.example.elysia.MainActivity.APP_PREFERENCES_AUTH;
 import static com.example.elysia.MainActivity.APP_PREFERENCES_NAME;
 import static com.example.elysia.MainActivity.APP_PREFERENCES_THEME;
@@ -14,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +32,15 @@ import com.example.elysia.MainActivity;
 import com.example.elysia.R;
 import com.example.elysia.themes.PurpleTheme;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,13 +52,15 @@ public class EditProfileFragment  extends Fragment {
     }
     EditText passwordOld;
     EditText passwordNew;
+    EditText nameEditText;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.editprofile_fragment, container, false);
         EditText emailEditText = view.findViewById(R.id.email_textView);
-        EditText nameEditText = view.findViewById(R.id.name_textView);
+        nameEditText = view.findViewById(R.id.name_textView);
         passwordOld = view.findViewById(R.id.passwordOld_textView);
         passwordNew = view.findViewById(R.id.passwordNew_textView);
         emailEditText.setText(((MainActivity)getActivity()).user.getEmail());
@@ -165,11 +172,7 @@ public class EditProfileFragment  extends Fragment {
             public void onClick(View v) {
                 if (!nameEditText.getText().toString().equals(((MainActivity)getActivity()).user.getName())){
                     ((MainActivity)getActivity()).user.setName(nameEditText.getText().toString());
-                    SharedPreferences.Editor editor = ((MainActivity)getActivity()).mSettings.edit();
-                    editor.putString(APP_PREFERENCES_NAME, nameEditText.getText().toString());
-                    editor.apply();
-                    Toast.makeText(getActivity(),R.string.nameChangeSuc,Toast.LENGTH_SHORT).show();
-                    refreshProfile();
+                    updateNameUser();
                 }
                 if (!passwordOld.getText().toString().equals("") && !passwordNew.getText().toString().equals("")){
                     System.out.println("НЕ сюда");
@@ -185,6 +188,35 @@ public class EditProfileFragment  extends Fragment {
             }
         });
         return  view;
+    }
+
+    public void updateNameUser(){
+        // Получение ссылки на документ в коллекции
+        DocumentReference docRef = ((MainActivity)getActivity()).db.collection("User").document(((MainActivity)getActivity()).user.getId());
+
+        // Обновление данных в документе
+        docRef.update("name", ((MainActivity)getActivity()).user.getName())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Данные успешно обновлены");
+                        sucsses();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(),R.string.notSucssesUpdateName,Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void sucsses(){
+        SharedPreferences.Editor editor = ((MainActivity)getActivity()).mSettings.edit();
+        editor.putString(APP_PREFERENCES_NAME, nameEditText.getText().toString());
+        editor.apply();
+        Toast.makeText(getActivity(),R.string.nameChangeSuc,Toast.LENGTH_SHORT).show();
+        refreshProfile();
     }
 
     public void updatePassword(){

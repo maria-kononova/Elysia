@@ -1,6 +1,5 @@
 package com.example.elysia;
 
-import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
@@ -9,16 +8,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.annotation.TargetApi;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import com.example.elysia.entity.Achievement;
 import com.example.elysia.entity.Event;
@@ -29,7 +22,6 @@ import com.example.elysia.fragment.CalendarFragment;
 import com.example.elysia.fragment.ProfileFragment;
 import com.example.elysia.fragment.TaskFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -44,6 +36,7 @@ public class MainActivity extends AppCompatActivity{
     private static final int LOCATION_REQUEST = 222;
     public static final String APP_PREFERENCES  = "my_settings";
     public static final String APP_PREFERENCES_AUTH = "auth";
+    public static final String APP_PREFERENCES_ID = "id";
     public static final String APP_PREFERENCES_EMAIL = "email";
     public static final String APP_PREFERENCES_NAME = "user";
     public static final String APP_PREFERENCES_THEME = "theme";
@@ -101,7 +94,9 @@ public class MainActivity extends AppCompatActivity{
             stateAuth = true;
             String email = mSettings.getString(APP_PREFERENCES_EMAIL, "email");
             String nameUser = mSettings.getString(APP_PREFERENCES_NAME, "user");
-            user = new User(email, nameUser);
+            String id = mSettings.getString(APP_PREFERENCES_ID, "0");
+            user = new User(id, email, nameUser);
+            System.out.println(user.getId());
         }
 
 

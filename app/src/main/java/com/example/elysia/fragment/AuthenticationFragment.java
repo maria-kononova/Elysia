@@ -2,6 +2,7 @@ package com.example.elysia.fragment;
 
 import static com.example.elysia.MainActivity.APP_PREFERENCES_AUTH;
 import static com.example.elysia.MainActivity.APP_PREFERENCES_EMAIL;
+import static com.example.elysia.MainActivity.APP_PREFERENCES_ID;
 import static com.example.elysia.MainActivity.APP_PREFERENCES_NAME;
 
 import android.content.SharedPreferences;
@@ -163,7 +164,7 @@ public class AuthenticationFragment extends Fragment {
                                 System.out.println(document.getId() + " => " + document.getData());
                                 if (emailTextView.getText().toString().equals(document.getData().get("email")))
                                 {
-                                    ((MainActivity)getActivity()).user = new User(document.getData().get("email").toString(), document.getData().get("name").toString());
+                                    ((MainActivity)getActivity()).user = new User(document.getId(), document.getData().get("email").toString(), document.getData().get("name").toString());
                                     sucsess();
                                     ((MainActivity)getActivity()).stateAuth = true;
                                     break;
@@ -213,6 +214,8 @@ public class AuthenticationFragment extends Fragment {
             editor.putString(APP_PREFERENCES_EMAIL,((MainActivity)getActivity()).user.getEmail());
             editor.apply();
             editor.putString(APP_PREFERENCES_NAME, ((MainActivity)getActivity()).user.getName());
+            editor.apply();
+            editor.putString(APP_PREFERENCES_ID, ((MainActivity)getActivity()).user.getId());
             editor.apply();
         }
 
