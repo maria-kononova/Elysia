@@ -25,6 +25,7 @@ public class Event {
         this.time = time;
         this.notification = notification;
     }
+
     public long getId() {
         return id;
     }
@@ -48,6 +49,7 @@ public class Event {
     public void setDate(String date) {
         this.date = date;
     }
+
     public String getTime() {
         return time;
     }

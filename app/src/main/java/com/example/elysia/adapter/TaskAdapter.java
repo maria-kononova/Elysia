@@ -21,18 +21,21 @@ import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private List<Task> taskList;
-    private List<Task> taskListComplete;
     int index;
     private final OnTaskClickListener onClickListener;
 
-    public TaskAdapter(List<Task> taskList,  OnTaskClickListener onTaskClickListener) {
-            this.taskList = taskList;
-            this.onClickListener = onTaskClickListener;
+    public TaskAdapter(List<Task> taskList, OnTaskClickListener onTaskClickListener) {
+        this.taskList = taskList;
+        this.onClickListener = onTaskClickListener;
     }
-    public interface OnTaskClickListener{
+
+    public interface OnTaskClickListener {
         void onTaskClick(Task task, int position);
+
         void setComplete(Task task, int position, Boolean isChecked);
+
         void onCheckedChanged(CompoundButton buttonView, boolean isChecked);
+
         void deleteTask(Task task, int position);
     }
 
@@ -55,8 +58,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         if (taskList.get(position).isDone()) {
             holder.checkBox.setChecked(true);
             holder.titleTextView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        }
-        else {
+        } else {
             holder.checkBox.setChecked(false);
         }
 
@@ -67,16 +69,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             }
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener(){
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickListener.onTaskClick(taskList.get(holder.getAdapterPosition()), index);
             }
         });
-        holder.checkBox.setOnClickListener(new View.OnClickListener(){
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickListener.setComplete(taskList.get(holder.getAdapterPosition()), index,  holder.checkBox.isChecked());
+                onClickListener.setComplete(taskList.get(holder.getAdapterPosition()), index, holder.checkBox.isChecked());
             }
         });
     }

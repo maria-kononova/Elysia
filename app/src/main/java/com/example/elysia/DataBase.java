@@ -22,14 +22,19 @@ import com.example.elysia.entity.Task;
 @Database(entities = {Task.class, Event.class, Note.class, Resource.class, Achievement.class}, version = 7, exportSchema = true)
 public abstract class DataBase extends RoomDatabase {
     public abstract TaskDao taskDao();
+
     public abstract EventDao eventDao();
+
     public abstract NoteDao noteDao();
+
     public abstract ResourceDao resourceDao();
+
     public abstract AchievementDao achievementDao();
+
     private static DataBase INSTANCE;
 
-    public static DataBase getInstance(Context context){
-        if (INSTANCE == null){
+    public static DataBase getInstance(Context context) {
+        if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(), DataBase.class, "MyDB")
                     .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
@@ -37,5 +42,4 @@ public abstract class DataBase extends RoomDatabase {
         }
         return INSTANCE;
     }
-
 }

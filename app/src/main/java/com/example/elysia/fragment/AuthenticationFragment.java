@@ -68,10 +68,12 @@ public class AuthenticationFragment extends Fragment {
             }
         });
         enterBtn.setOnClickListener(new View.OnClickListener() {
+            String emailPattern = "[a-z0-9]+@[a-z0-9]+\\.+[a-z]{1,3}+";
+
             @Override
             public void onClick(View v) {
+                //авторизация
                 if (state) {
-                    String emailPattern = "[a-z0-9]+@[a-z0-9]+\\.+[a-z]{1,3}+";
                     if (!emailTextView.getText().toString().equals("") && emailTextView.getText().toString().matches(emailPattern)) {
                         if (passwordTextView.getText().toString().length() >= 6) {
                             signIn();
@@ -79,9 +81,8 @@ public class AuthenticationFragment extends Fragment {
                             Toast.makeText(getActivity(), R.string.notValidPassword, Toast.LENGTH_SHORT).show();
                     } else
                         Toast.makeText(getActivity(), R.string.notValidEmail, Toast.LENGTH_SHORT).show();
-
+                    //регистрация
                 } else {
-                    String emailPattern = "[a-z0-9]+@[a-z0-9]+\\.+[a-z]{1,3}+";
                     if (!emailTextView.getText().toString().equals("") && emailTextView.getText().toString().matches(emailPattern)) {
                         if (passwordTextView.getText().toString().length() >= 6) {
                             if (passwordTextView.getText().toString().equals(passwordTextView2.getText().toString())) {
@@ -101,6 +102,7 @@ public class AuthenticationFragment extends Fragment {
         return view;
     }
 
+    //изменение интерфейса фрагмента при нажатии на кнопку (авторизация/регистрация)
     public void registration(View view) {
         LinearLayout registrationLinerLayout = view.findViewById(R.id.registration_linerLayout);
         TextView titleTextView = view.findViewById(R.id.titleTextView);
@@ -122,6 +124,7 @@ public class AuthenticationFragment extends Fragment {
         }
     }
 
+    //авторизация пользователя
     public void signIn() {
         loadingScreen();
         // [START sign_in_with_email]
@@ -149,34 +152,7 @@ public class AuthenticationFragment extends Fragment {
         // [END sign_in_with_email]
     }
 
-    private void reload() {
-    }
-
-
-    public void saveUser() {
-        // Create a new user with a first, middle, and last name
-        Map<String, Object> user = new HashMap<>();
-        user.put("email", emailTextView.getText().toString());
-        user.put("name", nameTextView.getText().toString());
-
-// Add a new document with a generated ID
-        ((MainActivity) getActivity()).db.collection("User")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        System.out.println("DocumentSnapshot added with ID: " + documentReference.getId());
-                        readDate();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println(e);
-                    }
-                });
-    }
-
+    //чтение данных пользователя из fireBase при авторизации
     public void readDate() {
         ((MainActivity) getActivity()).db.collection("User")
                 .get()
@@ -200,11 +176,7 @@ public class AuthenticationFragment extends Fragment {
                 });
     }
 
-    public void loadingScreen() {
-        ((MainActivity) getActivity()).loadingScreen = Loading.getInstance();
-        ((MainActivity) getActivity()).loadingScreen.show(((MainActivity) getActivity()).getSupportFragmentManager(), "loading screen");
-    }
-
+    //создание аккаунта при регистрации
     private void createAccount() {
         loadingScreen();
         // [START create_user_with_email]
@@ -231,10 +203,45 @@ public class AuthenticationFragment extends Fragment {
         // [END create_user_with_email]
     }
 
+    //сохранение нового пользователя при регистрации
+    public void saveUser() {
+        // Create a new user with a first, middle, and last name
+        Map<String, Object> user = new HashMap<>();
+        user.put("email", emailTextView.getText().toString());
+        user.put("name", nameTextView.getText().toString());
+
+        // Add a new document with a generated ID
+        ((MainActivity) getActivity()).db.collection("User")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        System.out.println("DocumentSnapshot added with ID: " + documentReference.getId());
+                        readDate();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println(e);
+                    }
+                });
+    }
+
+    //функция вызова экрана загрузки
+    public void loadingScreen() {
+        ((MainActivity) getActivity()).loadingScreen = Loading.getInstance();
+        ((MainActivity) getActivity()).loadingScreen.show(((MainActivity) getActivity()).getSupportFragmentManager(), "loading screen");
+    }
+
     private void updateUI(FirebaseUser user) {
 
     }
 
+    private void reload() {
+    }
+
+    //обработка успешного ответа firebase
     public void sucsess() {
         System.out.println("Запись в настройки");
         if (checkBox.isChecked()) {

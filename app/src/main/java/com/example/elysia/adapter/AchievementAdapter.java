@@ -25,7 +25,7 @@ import com.example.elysia.entity.Task;
 
 import java.util.List;
 
-public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.ViewHolder>{
+public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.ViewHolder> {
 
     private List<Achievement> achievements;
     private final AchievementAdapter.OnAchievementClickListener onClickListener;
@@ -35,7 +35,8 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
         this.achievements = achievements;
         this.onClickListener = onAchievementClickListener;
     }
-    public interface OnAchievementClickListener{
+
+    public interface OnAchievementClickListener {
         void onAchievementClick(Achievement achievement);
 
 
@@ -56,7 +57,8 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
     @Override
     public void onBindViewHolder(@NonNull AchievementAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Achievement achievement = achievements.get(position);
-        if(position==0) holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white));
+        if (position == 0)
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white));
         holder.title.setText(achievements.get(position).getTitle());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +76,7 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
             }
         });
 
-}
+    }
 
     @Override
     public int getItemCount() {

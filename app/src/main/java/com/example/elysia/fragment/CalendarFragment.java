@@ -35,8 +35,10 @@ public class CalendarFragment extends Fragment {
     String selectedDate;
     RecyclerView recyclerView;
     EventAdapter.OnEventClickListener eventClickListener;
+
     public CalendarFragment() {
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -47,28 +49,27 @@ public class CalendarFragment extends Fragment {
         DateTimeFormatter formmat1 = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
         selectedDate = formmat1.format(ldt);
         recyclerView = (RecyclerView) view.findViewById(R.id.event_list);
-
+        //удаление события
         eventClickListener = new EventAdapter.OnEventClickListener() {
             @Override
             public void deleteEvent(Event event, int position) {
-                ((MainActivity)getActivity()).eventList.remove(event);
-                ((MainActivity)getActivity()).dataBase.eventDao().delete(event);
+                ((MainActivity) getActivity()).eventList.remove(event);
+                ((MainActivity) getActivity()).dataBase.eventDao().delete(event);
                 eventAdapter.notifyDataSetChanged();
             }
-
+            //вкл/выкл уведомлений события
             @Override
             public void changeNotification(Event event) {
-                if(event.getNotification()) {
-                    ((MainActivity)getActivity()).dataBase.eventDao().updateNotificationOff(event.id);
+                if (event.getNotification()) {
+                    ((MainActivity) getActivity()).dataBase.eventDao().updateNotificationOff(event.id);
                     event.setNotification(false);
-                }
-                else {
-                    ((MainActivity)getActivity()).dataBase.eventDao().updateNotificationOn(event.id);
+                } else {
+                    ((MainActivity) getActivity()).dataBase.eventDao().updateNotificationOn(event.id);
                     event.setNotification(true);
                 }
                 eventAdapter.notifyDataSetChanged();
             }
-
+            //обновление события
             @Override
             public void calendarUpdate(Event event) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -80,17 +81,16 @@ public class CalendarFragment extends Fragment {
                 final ImageButton goButton = (ImageButton) dialogView.findViewById(R.id.goButton);
                 CalendarView calendarView = dialogView.findViewById(R.id.calendar);
                 TimePicker timePicker = dialogView.findViewById(R.id.clock);
-
+                //переход от календаря к часам и обратно
                 goButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (goButton.getTag().equals("next")){
+                        if (goButton.getTag().equals("next")) {
                             goButton.setTag("back");
                             goButton.setImageResource(R.drawable.ic_back);
                             calendarView.setVisibility(View.GONE);
                             timePicker.setVisibility(View.VISIBLE);
-                        }
-                        else{
+                        } else {
                             goButton.setTag("next");
                             goButton.setImageResource(R.drawable.ic_next);
                             timePicker.setVisibility(View.GONE);
@@ -100,34 +100,35 @@ public class CalendarFragment extends Fragment {
                 });
                 final StringBuilder selectedDate1 = new StringBuilder();
                 final StringBuilder selectedTime = new StringBuilder();
+                //получение выбранной даты с календаря
                 calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                        selectedDate1.append(year + "-" + (month+1) + "-");
+                        selectedDate1.append(year + "-" + (month + 1) + "-");
                         if (dayOfMonth >= 0 && dayOfMonth < 10)
                             selectedDate1.append("0");
                         selectedDate1.append(dayOfMonth);
                     }
                 });
-
+                //сохранение изменений даты и времени события
                 builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (selectedDate1.toString().equals("")){
+                        if (selectedDate1.toString().equals("")) {
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                             selectedDate1.append(sdf.format(new Date(calendarView.getDate())));
                         }
                         System.out.println(selectedDate);
-                        if (timePicker.getCurrentHour()<=9){
+                        if (timePicker.getCurrentHour() <= 9) {
                             selectedTime.append("0");
                         }
                         selectedTime.append(timePicker.getCurrentHour() + ":");
-                        if (timePicker.getCurrentMinute()<=9){
+                        if (timePicker.getCurrentMinute() <= 9) {
                             selectedTime.append("0");
                         }
                         selectedTime.append(timePicker.getCurrentMinute());
 
-                        ((MainActivity)getActivity()).dataBase.eventDao().updateDateTime(event.getId(), selectedDate1.toString(), selectedTime.toString());
+                        ((MainActivity) getActivity()).dataBase.eventDao().updateDateTime(event.getId(), selectedDate1.toString(), selectedTime.toString());
                         //if (selectedDate.equals(selectedDate1.toString())) ((MainActivity)getActivity()).eventList.add(event);
                         eventAdapter.notifyDataSetChanged();
                         updateRecyclerView(selectedDate);
@@ -141,13 +142,13 @@ public class CalendarFragment extends Fragment {
         };
         updateRecyclerView(selectedDate);
 
-
+        //получение выбранной даты в календаре
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                selectedDate = year + "-" + (month+1) + "-";
+                selectedDate = year + "-" + (month + 1) + "-";
                 if (dayOfMonth >= 0 && dayOfMonth < 10)
-                    selectedDate+="0";
+                    selectedDate += "0";
                 selectedDate += dayOfMonth;
                 updateRecyclerView(selectedDate);
             }
@@ -162,15 +163,15 @@ public class CalendarFragment extends Fragment {
         });
         return view;
     }
-
-    public void updateRecyclerView(String selectedDate){
+    //обновление списка событий в зависимости от выбранной даты в календаре
+    public void updateRecyclerView(String selectedDate) {
         System.out.println(selectedDate);
-        ((MainActivity)getActivity()).eventList = (ArrayList<Event>) ((MainActivity)getActivity()).dataBase.eventDao().getAllOnDate(selectedDate);
-        eventAdapter = new EventAdapter(((MainActivity)getActivity()).eventList, eventClickListener);
+        ((MainActivity) getActivity()).eventList = (ArrayList<Event>) ((MainActivity) getActivity()).dataBase.eventDao().getAllOnDate(selectedDate);
+        eventAdapter = new EventAdapter(((MainActivity) getActivity()).eventList, eventClickListener);
         recyclerView.setAdapter(eventAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
-
+    //Вызов диалогового окна для добавления события
     private void showAddEventDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getLayoutInflater();
@@ -196,13 +197,12 @@ public class CalendarFragment extends Fragment {
                 goButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (goButton.getTag().equals("next")){
+                        if (goButton.getTag().equals("next")) {
                             goButton.setTag("back");
                             goButton.setImageResource(R.drawable.ic_back);
                             calendarView.setVisibility(View.GONE);
                             timePicker.setVisibility(View.VISIBLE);
-                        }
-                        else{
+                        } else {
                             goButton.setTag("next");
                             goButton.setImageResource(R.drawable.ic_next);
                             timePicker.setVisibility(View.GONE);
@@ -215,7 +215,7 @@ public class CalendarFragment extends Fragment {
                 calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                        selectedDate1.append(year + "-" + (month+1) + "-");
+                        selectedDate1.append(year + "-" + (month + 1) + "-");
                         if (dayOfMonth >= 0 && dayOfMonth < 10)
                             selectedDate1.append("0");
                         selectedDate1.append(dayOfMonth);
@@ -225,16 +225,16 @@ public class CalendarFragment extends Fragment {
                 builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (selectedDate1.toString().equals("")){
+                        if (selectedDate1.toString().equals("")) {
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                             selectedDate1.append(sdf.format(new Date(calendarView.getDate())));
                         }
                         System.out.println(selectedDate);
-                        if (timePicker.getCurrentHour()<=9){
+                        if (timePicker.getCurrentHour() <= 9) {
                             selectedTime.append("0");
                         }
                         selectedTime.append(timePicker.getCurrentHour() + ":");
-                        if (timePicker.getCurrentMinute()<=9){
+                        if (timePicker.getCurrentMinute() <= 9) {
                             selectedTime.append("0");
                         }
                         selectedTime.append(timePicker.getCurrentMinute());
@@ -243,8 +243,9 @@ public class CalendarFragment extends Fragment {
                         Boolean state = false;
                         if (checkBox.isChecked()) state = true;
                         Event event = new Event(content, selectedDate1.toString(), selectedTime.toString(), state);
-                        ((MainActivity)getActivity()).dataBase.eventDao().insert(event);
-                        if (selectedDate.equals(selectedDate1.toString())) ((MainActivity)getActivity()).eventList.add(event);
+                        ((MainActivity) getActivity()).dataBase.eventDao().insert(event);
+                        if (selectedDate.equals(selectedDate1.toString()))
+                            ((MainActivity) getActivity()).eventList.add(event);
                         eventAdapter.notifyDataSetChanged();
 
                     }

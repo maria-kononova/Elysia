@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Тема приложения
         mSettings = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         themeName = mSettings.getString(APP_PREFERENCES_THEME, "Purple");
         switch (themeName){
@@ -74,7 +75,6 @@ public class MainActivity extends AppCompatActivity{
             case ("Purple"): setTheme(R.style.Theme_Elysia_Purple); break;
         }
         setContentView(R.layout.activity_main);
-        checkLocationRequest();
         requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE}, 1);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         //БД и аутентификация
@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity{
             user = new User(id, email, nameUser);
             System.out.println(user.getId());
         }
-
 
         loadingScreen = Loading.getInstance();
         loadingScreen.show(getSupportFragmentManager(), "loading screen");
@@ -133,21 +132,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
-
-
-   /* private void showProgressDialog() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false); // Нельзя закрыть ProgressDialog кнопкой "назад"
-        progressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }*/
-
-
+    //Загрузка данных из БД
     private void loadDataFromServer() {
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -161,26 +146,6 @@ public class MainActivity extends AppCompatActivity{
                 loadingScreen.dismiss();
             }
         }, 500);
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[]
-            permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions,grantResults);
-
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-    @AfterPermissionGranted(LOCATION_REQUEST)
-    private void checkLocationRequest() {
-        String[] perms = {android.Manifest.permission.ACCESS_FINE_LOCATION, WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE};
-        if (EasyPermissions.hasPermissions(this, perms)) {
-            // Already have permission, do the thing
-            // ...
-        } else {
-            // Do not have permissions, request them now
-            EasyPermissions.requestPermissions(this,"Please grant permission",
-                    LOCATION_REQUEST, perms);
-        }
     }
 
 

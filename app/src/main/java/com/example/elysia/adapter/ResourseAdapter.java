@@ -19,7 +19,7 @@ import com.example.elysia.entity.Resource;
 import java.io.File;
 import java.util.List;
 
-public class ResourseAdapter extends RecyclerView.Adapter<ResourseAdapter.ViewHolder>{
+public class ResourseAdapter extends RecyclerView.Adapter<ResourseAdapter.ViewHolder> {
     private List<Resource> resources;
     private final ResourseAdapter.OnResourseClickListener onClickListener;
 
@@ -29,10 +29,12 @@ public class ResourseAdapter extends RecyclerView.Adapter<ResourseAdapter.ViewHo
     }
 
 
-    public interface OnResourseClickListener{
+    public interface OnResourseClickListener {
         void openFile(Resource resource);
+
         void deleteFile(Resource resource);
     }
+
     @NonNull
     @Override
     public ResourseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -72,7 +74,7 @@ public class ResourseAdapter extends RecyclerView.Adapter<ResourseAdapter.ViewHo
         });
     }
 
-    public boolean check(String type, String string){
+    public boolean check(String type, String string) {
         return string.contains(type);
 
     }

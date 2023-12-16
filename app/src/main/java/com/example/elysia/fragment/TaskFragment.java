@@ -62,6 +62,7 @@ public class TaskFragment extends Fragment {
         taskCompleteRecyclerView = view.findViewById(R.id.taskComplete_list);
         achievementRecyclerView = view.findViewById(R.id.achievementRV);
         achievementAddButton.setOnClickListener(new View.OnClickListener() {
+            //диалог добавления цели
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -75,9 +76,9 @@ public class TaskFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        Achievement achievement =  new Achievement(titleEditText.getText().toString());
+                        Achievement achievement = new Achievement(titleEditText.getText().toString());
                         ((MainActivity) getActivity()).dataBase.achievementDao().insert(achievement);
-                        ((MainActivity)getActivity()).achievements = ((MainActivity)getActivity()).dataBase.achievementDao().getAchievements();
+                        ((MainActivity) getActivity()).achievements = ((MainActivity) getActivity()).dataBase.achievementDao().getAchievements();
                         reloadTaskFragment();
                     }
                 });
@@ -86,7 +87,7 @@ public class TaskFragment extends Fragment {
                 dialog.show();
             }
         });
-
+        //скрыть/показать список не выполненных задач
         taskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,6 +95,7 @@ public class TaskFragment extends Fragment {
                 changeButton(taskButton);
             }
         });
+        //скрыть/показать список выполненных задач
         taskCompleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +105,7 @@ public class TaskFragment extends Fragment {
         });
 
         TaskAdapter.OnTaskClickListener taskClickListener = new TaskAdapter.OnTaskClickListener() {
+            //переход к подробностям задачи на другой фрагмент
             @Override
             public void onTaskClick(Task task, int position) {
                 TaskDetailsFragment taskDetails = new TaskDetailsFragment(task, fragmentManager);
@@ -111,6 +114,7 @@ public class TaskFragment extends Fragment {
                         .commit();
             }
 
+            //изменение статуса задачи
             @Override
             public void setComplete(Task task, int position, Boolean isChecked) {
                 System.out.println(isChecked);
@@ -136,9 +140,9 @@ public class TaskFragment extends Fragment {
 
             }
 
+            //удаление задачи
             @Override
             public void deleteTask(Task task, int position) {
-
                 if (task.isDone()) {
                     ((MainActivity) getActivity()).taskCompleteList.remove(task);
                     taskCompleteAdapter.notifyDataSetChanged();
@@ -151,24 +155,25 @@ public class TaskFragment extends Fragment {
         };
 
         AchievementAdapter.OnAchievementClickListener achievementClickListener = new AchievementAdapter.OnAchievementClickListener() {
-
+            //сортировка по выбранной цели
             @Override
             public void onAchievementClick(Achievement achievement) {
-                if(((MainActivity) getActivity()).achievements.size()!=1){
+                if (((MainActivity) getActivity()).achievements.size() != 1) {
                     ((MainActivity) getActivity()).achievements.remove(achievement);
                     Achievement achievement1 = ((MainActivity) getActivity()).achievements.get(0);
                     ((MainActivity) getActivity()).achievements.set(0, achievement);
                     ((MainActivity) getActivity()).achievements.add(1, achievement1);
                     achievementAdapter.notifyDataSetChanged();
-                    ((MainActivity) getActivity()).idAchievement=((MainActivity) getActivity()).achievements.get(0).getId();
+                    ((MainActivity) getActivity()).idAchievement = ((MainActivity) getActivity()).achievements.get(0).getId();
                     System.out.println(((MainActivity) getActivity()).idAchievement);
-                }
-                else {
+                } else {
                     ((MainActivity) getActivity()).idAchievement = 1;
                 }
                 reloadTaskLists();
                 reloadTaskFragment();
             }
+
+            //открытие диалога редактирования цели
             @Override
             public void onAchievementLongClick(Achievement achievement, int position) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -181,42 +186,38 @@ public class TaskFragment extends Fragment {
                 textView.setText(R.string.editAch);
                 titleEditText.setText(achievement.getTitle());
 
-                if (achievement.getId()!=1) {
+                if (achievement.getId() != 1) {
 
-                builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ((MainActivity) getActivity()).achievements.get(position).setTitle(titleEditText.getText().toString());
-                        ((MainActivity) getActivity()).dataBase.achievementDao().updateAchievement(achievement.getId(), achievement.getTitle());
-                        reloadTaskFragment();
-                    }
-                });
-                builder.setNegativeButton(
-                        "Удалить цель",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                if (((MainActivity) getActivity()).achievements.size()==2) {
-                                    ((MainActivity) getActivity()).idAchievement = 1;
-                                    reloadTaskLists();
+                    builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ((MainActivity) getActivity()).achievements.get(position).setTitle(titleEditText.getText().toString());
+                            ((MainActivity) getActivity()).dataBase.achievementDao().updateAchievement(achievement.getId(), achievement.getTitle());
+                            reloadTaskFragment();
+                        }
+                    });
+                    builder.setNegativeButton(
+                            "Удалить цель",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if (((MainActivity) getActivity()).achievements.size() == 2) {
+                                        ((MainActivity) getActivity()).idAchievement = 1;
+                                        reloadTaskLists();
+                                    }
+                                    ((MainActivity) getActivity()).achievements.remove(achievement);
+                                    ((MainActivity) getActivity()).dataBase.achievementDao().delete(achievement);
+                                    reloadTaskFragment();
                                 }
-                                ((MainActivity) getActivity()).achievements.remove(achievement);
-                                ((MainActivity)getActivity()).dataBase.achievementDao().delete(achievement);
-                                reloadTaskFragment();
-                            }
-                        });
-                }
-                else{
+                            });
+                } else {
                     builder.setNegativeButton("Отмена", null);
                 }
-
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
-                //((MainActivity)getActivity()).achievements = ((MainActivity)getActivity()).dataBase.achievementDao().getAchievements();
                 achievementAdapter.notifyDataSetChanged();
             }
         };
-
+        //загрузки данных в списки целей, выполненных и не выполненных задач
         taskAdapter = new TaskAdapter(((MainActivity) getActivity()).taskList, taskClickListener);
         taskRecyclerView.setAdapter(taskAdapter);
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -241,6 +242,7 @@ public class TaskFragment extends Fragment {
         return view;
     }
 
+    //диалог добавления задачи
     private void showAddTaskDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getLayoutInflater();
@@ -252,7 +254,7 @@ public class TaskFragment extends Fragment {
         final Spinner spinner = dialogView.findViewById(R.id.spinner);
         final CalendarView calendarView = dialogView.findViewById(R.id.calendar);
         List<String> data = new ArrayList<>();
-        for (Achievement achievement : ((MainActivity) getActivity()).achievements){
+        for (Achievement achievement : ((MainActivity) getActivity()).achievements) {
             data.add(achievement.getTitle());
         }
 
@@ -286,7 +288,7 @@ public class TaskFragment extends Fragment {
                 Task task = new Task(title, description, dateToday, selectedDate.toString(), ((MainActivity) getActivity()).achievements.get((int) spinner.getSelectedItemId()).getId());
                 //((MainActivity) getActivity()).taskList.add(task);
                 ((MainActivity) getActivity()).dataBase.taskDao().insert(task);
-                ((MainActivity)getActivity()).taskList = (ArrayList<Task>) ((MainActivity)getActivity()).dataBase.taskDao().getAllNotDone(((MainActivity) getActivity()).idAchievement);
+                ((MainActivity) getActivity()).taskList = (ArrayList<Task>) ((MainActivity) getActivity()).dataBase.taskDao().getAllNotDone(((MainActivity) getActivity()).idAchievement);
                 reloadTaskFragment();
             }
         });
@@ -296,19 +298,21 @@ public class TaskFragment extends Fragment {
         dialog.show();
     }
 
-    public void reloadTaskLists()
-    {
-        ((MainActivity)getActivity()).taskList = (ArrayList<Task>) ((MainActivity)getActivity()).dataBase.taskDao().getAllNotDone(((MainActivity) getActivity()).idAchievement);
-        ((MainActivity)getActivity()).taskCompleteList = (ArrayList<Task>) ((MainActivity)getActivity()).dataBase.taskDao().getAllDone(((MainActivity) getActivity()).idAchievement);
+    //обноление списков
+    public void reloadTaskLists() {
+        ((MainActivity) getActivity()).taskList = (ArrayList<Task>) ((MainActivity) getActivity()).dataBase.taskDao().getAllNotDone(((MainActivity) getActivity()).idAchievement);
+        ((MainActivity) getActivity()).taskCompleteList = (ArrayList<Task>) ((MainActivity) getActivity()).dataBase.taskDao().getAllDone(((MainActivity) getActivity()).idAchievement);
     }
 
-    public void reloadTaskFragment(){
+    //перезагрузка фрагмента
+    public void reloadTaskFragment() {
         TaskFragment taskFragment = new TaskFragment(fragmentManager);
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, taskFragment)
                 .commitAllowingStateLoss();
     }
 
+    //изменение кнопки, которая скрывает списки задач (стрелка указывает вверх\вниз)
     public void changeButton(ImageButton imageButton) {
         System.out.println("ok");
 
@@ -321,6 +325,7 @@ public class TaskFragment extends Fragment {
         }
     }
 
+    //скрытие/показ списков задач
     public void visableRV(RecyclerView recyclerView) {
         if (recyclerView.getVisibility() == RecyclerView.VISIBLE) {
             recyclerView.setVisibility(RecyclerView.GONE);

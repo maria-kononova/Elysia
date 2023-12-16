@@ -38,7 +38,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.elysia.FileDialog;
 import com.example.elysia.MainActivity;
 import com.example.elysia.R;
 import com.example.elysia.adapter.ResourseAdapter;
@@ -81,8 +80,6 @@ public class TaskDetailsFragment extends Fragment {
     LinedEditText linedEditText;
     CheckBox checkBox;
     boolean state = true;
-    ImageView iVPreviewImage;
-    ImageButton deleteNote;
     LinearLayout calendarButton;
     Boolean save = true;
     Boolean saveNote = false;
@@ -93,7 +90,6 @@ public class TaskDetailsFragment extends Fragment {
     RecyclerView recyclerView;
     ResourseAdapter resourseAdapter;
     private static final int REQUEST_CODE = 1;
-    File folderData =  new File("/data/data/com.example.elysia/data_resourse/");
 
     public TaskDetailsFragment(Task task, FragmentManager fragmentManager) {
         this.task = task;
@@ -105,10 +101,6 @@ public class TaskDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.task, container, false);
-
-        if (!folderData.exists()) {
-            folderData.mkdirs();
-        }
         titleTextView = view.findViewById(R.id.titleTask_textView);
         descriptionTextView = view.findViewById(R.id.descriptionTask_textView);
         ImageButton imageButton = (ImageButton) view.findViewById(R.id.backButton);
@@ -123,9 +115,25 @@ public class TaskDetailsFragment extends Fragment {
         spinner = view.findViewById(R.id.spinner);
         TextView dateCreateTextView = view.findViewById(R.id.dateCreateTextView);
         TextView dateFinishTextView = view.findViewById(R.id.dateFinishTextView);
+        titleTextView.setText(task.getTitle());
+        //загрузка данных о задаче
+        descriptionTextView.setText(task.getDescription());
+        setCheckBoxState();
+        dateCreateTextView.setText(task.getDateCreate());
+        dateFinishTextView.setText(task.getDateFinish());
+
+        //загрузка заметки, если она существует
+        note = ((MainActivity) getActivity()).dataBase.noteDao().getNoteByIdTask(task.getId());
+        if (note != null)
+        {
+            deleteNote.setTag("on");
+            dateNoteLastChangeTextView.setText(note.getDateLastChange());
+            linedEditText.setText(note.getContent());
+            state = false;
+        }
 
         ((MainActivity) getActivity()).resources = ((MainActivity) getActivity()).dataBase.resourceDao().getResourcesByTaskId(task.getId());
-
+        //получение список существующих целей и загрузка их в спиннер, выделение цели задачи как выбранной
         List<String> data = new ArrayList<>();
         Achievement selectedAchievement = ((MainActivity) getActivity()).dataBase.achievementDao().getAchievementById(task.getIdAchievement());
         int idSelectedAchievement = 0;
@@ -150,7 +158,7 @@ public class TaskDetailsFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
-
+        //список прикреплённых файлов, обработка события нажатие (открытие)  и удаления файла
         ResourseAdapter.OnResourseClickListener resourseClickListener = new ResourseAdapter.OnResourseClickListener() {
             @Override
             public void openFile(Resource resource) {
@@ -170,7 +178,7 @@ public class TaskDetailsFragment extends Fragment {
         recyclerView.setAdapter(resourseAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-
+        //изменение состояния задачи выполнена/не выполнена
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,7 +198,7 @@ public class TaskDetailsFragment extends Fragment {
                 updateTaskLists();
             }
         });
-
+        //изменение даты окончания задачи
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,27 +245,7 @@ public class TaskDetailsFragment extends Fragment {
                 dialog.show();
             }
         });
-        titleTextView.setText(task.getTitle());
-        descriptionTextView.setText(task.getDescription());
-        setCheckBoxState();
-        dateCreateTextView.setText(task.getDateCreate());
-        dateFinishTextView.setText(task.getDateFinish());
-        note = ((MainActivity) getActivity()).dataBase.noteDao().getNoteByIdTask(task.getId());
-        if (note != null)
-        {
-            deleteNote.setTag("on");
-            dateNoteLastChangeTextView.setText(note.getDateLastChange());
-            linedEditText.setText(note.getContent());
-            state = false;
-        }
-
-        /*Resource resource = ((MainActivity) getActivity()).dataBase.resourceDao().getResourceByTaskId(task.getId());
-        if (resource !=null)
-        {
-            //getContext().grantUriPermission("com.example.elysia", Uri.parse(resource.getPathResource()), Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            iVPreviewImage.setImageURI(Uri.parse(resource.getPathResource()));
-        }*/
-
+        //удаление заметки
         deleteNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -277,14 +265,13 @@ public class TaskDetailsFragment extends Fragment {
                                     deleteNote.setTag("off");
                                 }
                             });
-
                     builder1.setNegativeButton("Отмена", null);
                     AlertDialog alert11 = builder1.create();
                     alert11.show();
                 }
             }
         });
-
+        //выход с фрагмента, првоерка и сохранение изменений, запрос ответа у пользователя сохранить ли изменения, если они есть
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -329,7 +316,7 @@ public class TaskDetailsFragment extends Fragment {
                 openFilePicker();
             }
         });
-
+        //добавление/скрытие заметки
         addNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -346,7 +333,7 @@ public class TaskDetailsFragment extends Fragment {
         });
         return view;
     }
-
+    //выполненена/не выполнена задача
     public void setCheckBoxState() {
         if (task.isDone()) {
             checkBox.setChecked(true);
@@ -356,7 +343,7 @@ public class TaskDetailsFragment extends Fragment {
             checkBox.setText(R.string.noComplete);
         }
     }
-
+    //сохранее изменений или создание заметок
     public void saveNote() {
         System.out.println(state);
         if (!linedEditText.getText().toString().equals("")){
@@ -383,20 +370,7 @@ public class TaskDetailsFragment extends Fragment {
         saveNote = true;
         updateTaskLists();
     }
-
-    public void checkChange(){
-        if(!task.getTitle().equals(titleTextView.getText().toString())) save = false;
-        if(!task.getDescription().equals(descriptionTextView.getText().toString())) save = false;
-        System.out.println(saveNote);
-        //if(!linedEditText.getText().toString().equals("")||saveNote) save = false;
-        //note = ((MainActivity) getActivity()).dataBase.noteDao().getNoteByIdTask(task.getId());
-        /*if(note!=null) {
-            System.out.println(note.getContent());
-            System.out.println(linedEditText.getText().toString());
-            if(!note.getContent().equals(linedEditText.getText().toString())) save = false;
-        }*/
-    }
-
+    //сохранение данных
     public void saveData(){
         if(!task.getTitle().equals(titleTextView.getText().toString())){
             task.setTitle(titleTextView.getText().toString());
@@ -410,26 +384,32 @@ public class TaskDetailsFragment extends Fragment {
         updateTaskLists();
         save = true;
     }
-
+    //проверка изменились ли данные
+    public void checkChange(){
+        if(!task.getTitle().equals(titleTextView.getText().toString())) save = false;
+        if(!task.getDescription().equals(descriptionTextView.getText().toString())) save = false;
+        System.out.println(saveNote);
+    }
+    //выход из фрагмента, переход к спискам задач
     public void exit(){
         TaskFragment task = new TaskFragment(fragmentManager);
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, task)
                 .commit();
     }
-
+    //обновление списков задач
     public void updateTaskLists(){
         ((MainActivity)getActivity()).taskList = (ArrayList<Task>) ((MainActivity)getActivity()).dataBase.taskDao().getAllNotDone(((MainActivity) getActivity()).idAchievement);
         ((MainActivity)getActivity()).taskCompleteList = (ArrayList<Task>) ((MainActivity)getActivity()).dataBase.taskDao().getAllDone(((MainActivity) getActivity()).idAchievement);
     }
-
+    //открытие проводника для выбора файла
     private void openFilePicker() {
         Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
         chooseFile.setType("*/*");
         chooseFile = Intent.createChooser(chooseFile, "Choose file");
         startActivityForResult(chooseFile, REQUEST_CODE);
     }
-
+    //получение uri выбранного в проводнике файла
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -443,25 +423,7 @@ public class TaskDetailsFragment extends Fragment {
             //openFileInApp(uri);
         }
     }
-    /*public static void copy(File src, File dst) throws IOException {
-        InputStream in = new FileInputStream(src);
-        try {
-            OutputStream out = new FileOutputStream(dst);
-            try {
-                // Transfer bytes from in to out
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-            } finally {
-                out.close();
-            }
-        } finally {
-            in.close();
-        }
-    }*/
-
+    //открытие файла в приложении его типа
     private void openFileInApp(Uri uri) {
 
         try {

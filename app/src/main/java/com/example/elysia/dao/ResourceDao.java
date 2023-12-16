@@ -15,6 +15,7 @@ import java.util.List;
 public interface ResourceDao {
     @Query("Select * from Resource where idTask=:idTask")
     List<Resource> getResourcesByTaskId(long idTask);
+
     @Insert
     void insert(Resource resource);
 

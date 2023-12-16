@@ -35,6 +35,7 @@ public class Resource {
     public void setId(long id) {
         this.id = id;
     }
+
     public long getIdTask() {
         return idTask;
     }

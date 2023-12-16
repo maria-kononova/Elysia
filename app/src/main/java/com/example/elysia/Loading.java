@@ -9,15 +9,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 public class Loading extends DialogFragment {
-    public static Loading getInstance(){
-        return  new Loading();
+    public static Loading getInstance() {
+        return new Loading();
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState){
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.LoadingScreenTheme);
-
     }
     @Nullable
     @Override
@@ -25,6 +24,4 @@ public class Loading extends DialogFragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_loading, container, false);
     }
-
-
-    }
+}

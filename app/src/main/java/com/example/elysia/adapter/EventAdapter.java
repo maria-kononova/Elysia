@@ -18,7 +18,7 @@ import com.example.elysia.entity.Task;
 
 import java.util.List;
 
-public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
+public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
     private List<Event> eventList;
     private final OnEventClickListener onClickListener;
 
@@ -26,8 +26,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
         this.eventList = eventList;
         this.onClickListener = onEventClickListener;
     }
-    public interface OnEventClickListener{
+
+    public interface OnEventClickListener {
         void deleteEvent(Event event, int position);
+
         void changeNotification(Event event);
 
         void calendarUpdate(Event event);
@@ -50,8 +52,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
         holder.dateTimeTextView.setText(event.getDate() + " " + event.getTime());
         if (event.getNotification()) {
             holder.notificationImageView.setImageResource(R.drawable.ic_notification_on);
-        }
-        else {
+        } else {
             holder.notificationImageView.setImageResource(R.drawable.ic_notification_off);
         }
         //!!!!!!!!!

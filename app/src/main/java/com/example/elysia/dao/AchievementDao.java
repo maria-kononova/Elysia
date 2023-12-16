@@ -16,8 +16,10 @@ import java.util.List;
 public interface AchievementDao {
     @Query("Select * from Achievement")
     List<Achievement> getAchievements();
+
     @Query("Select * from Achievement where id=:id")
     Achievement getAchievementById(long id);
+
     @Query("update Achievement set titleAchievement=:title where id =:id")
     void updateAchievement(long id, String title);
 

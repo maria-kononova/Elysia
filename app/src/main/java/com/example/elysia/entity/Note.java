@@ -37,9 +37,7 @@ public class Note {
         return idTask;
     }
 
-    public void setIdTask(long idTask) {
-        this.idTask = idTask;
-    }
+    public void setIdTask(long idTask) {this.idTask = idTask;}
 
     public String getContent() {
         return content;

@@ -15,11 +15,13 @@ import java.util.List;
 public interface TaskDao {
     @Query("Select * from Task where isDone=0 and idAchievement=:idAch")
     List<Task> getAllNotDone(long idAch);
+
     @Query("Select * from Task where isDone=1 and idAchievement=:idAch")
     List<Task> getAllDone(long idAch);
 
     @Query("Select Count(*) from Task where isDone=1")
     int getCompleteTask();
+
     @Query("Select Count(*) from Task where isDone=0")
     int getNoCompleteTask();
 
@@ -42,6 +44,7 @@ public interface TaskDao {
 
     @Query("update Task set descriptionTask=:newDescription where id=:id")
     void updateDescription(long id, String newDescription);
+
     @Query("update Task set idAchievement=:idAch where id=:id")
     void updateAchievement(long id, long idAch);
 
